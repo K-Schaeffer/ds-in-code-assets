@@ -1,0 +1,28 @@
+{
+  "name": "@meiuca/dsc-assets",
+  "version": "0.0.1",
+  "description": "Biblioteca de Assets para o Curso de Design System in Code da Meiuca",
+  "main": "index.js",
+  "author": "Will Angélico - Meiuca <will.angelico@meiuca.design>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Meiuca/ds-in-code-assets.git"
+  },
+  "files": [
+    "dist",
+    "src/assets"
+  ],
+  "scripts": {
+    "build": "rimraf dist && node src/build.js"
+  },
+  "devDependencies": {
+    "convert-svg-to-png": "^0.5.0",
+    "cross-env": "^7.0.3",
+    "fs-extra": "^4.0.1",
+    "glob": "^7.1.7",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "svg-to-js": "^1.1.1"
+  }
+}
