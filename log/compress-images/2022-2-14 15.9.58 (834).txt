@@ -1,0 +1,7 @@
+File from: [fonts,icons,images,svgsToCompress.js/*.{jpg,JPG,jpeg,JPEG}]
+
+File to: [-]
+
+Compression algorithm: [-]
+
+Description:  Directory is empty!: 

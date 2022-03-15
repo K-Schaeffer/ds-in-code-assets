@@ -1,14 +1,15 @@
 const fs = require("fs");
-const svgsToCompress = require("./assets/svgsToCompress");
-const assetModulesFolders = ['brands', 'emojis', 'icons'];
-const {compressFile, copyAssetFile, normalizedOutputPath} = require("./utils/generateCompressedBitmaps");
+const {copyAssetFile} = require("./utils/normalizeCopy");
 const {svgToJS} = require("./utils/svgToJS");
+const { compressImages } = require('./utils/compressImages');
 
-svgsToCompress.forEach(sourceFilePath => {
-  compressFile(sourceFilePath);
-  copyAssetFile(sourceFilePath);
-})
-
+/*
+  Define as pastas de SVGS
+  Percorre cada pasta
+  define o caminho de entrada e saída
+  e chama o método que transfrme o svg em módulo Javascript
+*/
+const assetModulesFolders = ['icons'];
 assetModulesFolders.forEach(asset => {
   const options = {
     inputDir: `src/assets/${asset}`,
@@ -17,20 +18,28 @@ assetModulesFolders.forEach(asset => {
 
   svgToJS(options);
 })
-
-const bitmapFiles = fs.readdirSync("src/assets/images");
-bitmapFiles.forEach(filePath => {
-  const sourceFullPath = "src/assets/images/" + filePath;
-  copyAssetFile(sourceFullPath);
-})
+/*
+  Cria um arquivo index com o export de todos os módulos javascript SVG
+*/
 
 fs.writeFileSync("dist/index.js", `
-  import * as brands from "./assets/brands";
-  import * as emojis from "./assets/emojis";
   import * as icons from "./assets/icons";
   export {
-    brands,
-    emojis,
     icons
   }
 `)
+
+/*
+  Chama o método de compressão para imagens Jpeg
+*/
+compressImages("src/assets/images", 'dist/assets/images/')
+
+/*
+  Percorre a pasta de fonts
+  Copia as fonts para a pasta dist
+*/
+const fontFiles = fs.readdirSync("src/assets/fonts");
+fontFiles.forEach(filePath => {
+  const sourceFullPath = "src/assets/fonts/" + filePath;
+  copyAssetFile(sourceFullPath);
+})
