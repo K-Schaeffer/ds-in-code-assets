@@ -18,12 +18,7 @@
   },
   "devDependencies": {
     "compress-images": "^2.0.5",
-    "convert-svg-to-png": "^0.5.0",
-    "cross-env": "^7.0.3",
     "fs-extra": "^4.0.1",
-    "glob": "^7.1.7",
-    "mkdirp": "^1.0.4",
-    "rimraf": "^3.0.2",
-    "svg-to-js": "^1.1.1"
+    "rimraf": "^3.0.2"
   }
 }
