@@ -3,6 +3,7 @@ const path = require("path");
 const fse = require("fs-extra");
 const specialCharactherRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/gi;
 
+// Helpers to normalize Names
 function matchSpecialCharacters() {
   return new RegExp(specialCharactherRegex);
 }
@@ -19,6 +20,7 @@ function _camelCase(name) {
     .replace( / (.)/g, function($1) { return $1.toUpperCase(); })
     .replace( / /g, '');
 }
+
 
 function svgToJS (config) {
   const scale = config.scale || 1
@@ -57,7 +59,6 @@ function svgToJS (config) {
   let commonAssetIndex = ``;
   let srcAssetIndex = ``;
   let svgsList = [];
-  let svgTypes = `import { SvgProps } from 'react-native-svg';\n\n`;
 
   svgs.forEach(({ svg, name }) => {
     const _name = name.replace(/-/g, '_').toLocaleLowerCase();
@@ -65,7 +66,6 @@ function svgToJS (config) {
     const currentFileContent = `const ${normalizedName} = '${svg}';\nexport default ${normalizedName}`;
     commonAssetIndex += `import ${normalizedName} from "./${_name}.js";\n`;
     srcAssetIndex += `import ${normalizedName} from "./${name}.svg";\n`;
-    svgTypes += `export const ${normalizedName}: React.FC<SvgProps>;\n`;
     svgsList.push(normalizedName);
     fse.outputFileSync(`${config.outputDir}/${name.replace(/-/g, '_').toLocaleLowerCase()}.js`, currentFileContent);
   });
@@ -81,8 +81,6 @@ function svgToJS (config) {
   fse.outputFileSync(`${config.outputDir}/index.js`, commonAssetIndex);
   fse.outputFileSync(`${config.inputDir}/index.js`, srcAssetIndex);
 
-  if (svgTypes)
-    fse.outputFileSync(`${config.inputDir}/index.d.ts`, svgTypes);
   fse.outputFileSync(`${config.outputDir}/exported-assets-list.js`, `export default ${JSON.stringify(svgsList)}`);
 }
 
