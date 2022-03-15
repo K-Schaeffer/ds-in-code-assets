@@ -1,7 +1,0 @@
-File from: [image1.jpg,image2.jpg,image3.jpg/*.{jpg,JPG,jpeg,JPEG}]
-
-File to: [-]
-
-Compression algorithm: [-]
-
-Description:  Directory is empty!: 
