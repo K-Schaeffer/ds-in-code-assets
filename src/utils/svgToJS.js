@@ -1,23 +1,24 @@
-const fs = require("fs");
-const path = require("path");
-const fse = require("fs-extra");
-const specialCharactherRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/gi;
+const fs = require('fs')
+const path = require('path')
+const fse = require('fs-extra')
+
+const specialCharacterRegExp = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/gi
 
 // Helpers to normalize Names
-function matchSpecialCharacters() {
-  return new RegExp(specialCharactherRegex);
+function matchSpecialCharacters () {
+  return new RegExp(specialCharacterRegExp)
 }
 
-function normalizeName(name) {
-  const regex = matchSpecialCharacters();
-  return !regex.test(name[0]) ? name[0].toUpperCase() + name.slice(1, name.length) : name[1].toUpperCase() + name.slice(2, name.length);
+function normalizeName (name) {
+  const regex = matchSpecialCharacters()
+  return !regex.test(name[0]) ? name[0].toUpperCase() + name.slice(1, name.length) : name[1].toUpperCase() + name.slice(2, name.length)
 }
 
-function _camelCase(name) {
+function _camelCase (name) {
   return name.toLowerCase()
     .replace( /[-_]+/g, ' ')
     .replace( /[^\w\s]/g, '')
-    .replace( / (.)/g, function($1) { return $1.toUpperCase(); })
+    .replace( / (.)/g, function($1) { return $1.toUpperCase() })
     .replace( / /g, '');
 }
 
@@ -25,8 +26,8 @@ function _camelCase(name) {
 function svgToJS (config) {
   const scale = config.scale || 1
   const files = fs.readdirSync(config.inputDir)
-  const svgs = [];
-  const isIcon = config.inputDir.includes('icons');
+  const svgs = []
+  const isIcon = config.inputDir.includes('icons')
 
   for (const file of files) {
     if (file.slice(-4) !== '.svg') continue
@@ -56,32 +57,32 @@ function svgToJS (config) {
     })
   }
 
-  let commonAssetIndex = ``;
-  let srcAssetIndex = ``;
-  let svgsList = [];
+  let commonAssetIndex = ``
+  let srcAssetIndex = ``
+  let svgsList = []
 
   svgs.forEach(({ svg, name }) => {
-    const _name = name.replace(/-/g, '_').toLocaleLowerCase();
-    const normalizedName = normalizeName(_camelCase(_name));
-    const currentFileContent = `const ${normalizedName} = '${svg}';\nexport default ${normalizedName}`;
-    commonAssetIndex += `import ${normalizedName} from "./${_name}.js";\n`;
-    srcAssetIndex += `import ${normalizedName} from "./${name}.svg";\n`;
+    const _name = name.replace(/-/g, '_').toLocaleLowerCase()
+    const normalizedName = normalizeName(_camelCase(_name))
+    const currentFileContent = `const ${normalizedName} = '${svg}';\nexport default ${normalizedName}`
+    commonAssetIndex += `import ${normalizedName} from "./${_name}.js";\n`
+    srcAssetIndex += `import ${normalizedName} from "./${name}.svg";\n`
     svgsList.push(normalizedName);
-    fse.outputFileSync(`${config.outputDir}/${name.replace(/-/g, '_').toLocaleLowerCase()}.js`, currentFileContent);
-  });
+    fse.outputFileSync(`${config.outputDir}/${name.replace(/-/g, '_').toLocaleLowerCase()}.js`, currentFileContent)
+  })
 
   const exportsAssets = `
   export {
     ${svgs.map(svg => normalizeName(_camelCase(svg.name))).join()}
   }
 `
-  commonAssetIndex += exportsAssets;
-  srcAssetIndex += exportsAssets;
+  commonAssetIndex += exportsAssets
+  srcAssetIndex += exportsAssets
 
-  fse.outputFileSync(`${config.outputDir}/index.js`, commonAssetIndex);
-  fse.outputFileSync(`${config.inputDir}/index.js`, srcAssetIndex);
+  fse.outputFileSync(`${config.outputDir}/index.js`, commonAssetIndex)
+  fse.outputFileSync(`${config.inputDir}/index.js`, srcAssetIndex)
 
-  fse.outputFileSync(`${config.outputDir}/exported-assets-list.js`, `export default ${JSON.stringify(svgsList)}`);
+  fse.outputFileSync(`${config.outputDir}/exported-assets-list.js`, `export default ${JSON.stringify(svgsList)}`)
 }
 
 module.exports = {
