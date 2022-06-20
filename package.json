@@ -2,8 +2,8 @@
   "name": "ds-in-code-assets",
   "version": "0.0.1",
   "description": "Design Tokens library forked from @Meiuca during the Design System In Code course.",
+  "author": "Kauan Schaeffer - <kcb.schaeffer@gmail.com>",
   "main": "index.js",
-  "author": "Kauan Schaeffer - <kcb.schaeffer@gmacom>",
   "license": "MIT",
   "repository": {
     "type": "git",
