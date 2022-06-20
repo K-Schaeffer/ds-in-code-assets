@@ -1,18 +1,21 @@
 {
-  "name": "@meiuca/dsc-assets",
-  "version": "1.0.2",
-  "description": "Biblioteca de Assets para o Curso de Design System in Code da Meiuca",
+  "name": "ds-in-code-assets",
+  "version": "0.0.1",
+  "description": "Design Tokens library forked from @Meiuca during the Design System In Code course.",
   "main": "index.js",
-  "author": "Will Angélico - Meiuca <will.angelico@meiuca.design>",
-  "license": "ISC",
+  "author": "Kauan Schaeffer - <kcb.schaeffer@gmacom>",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Meiuca/ds-in-code-assets.git"
+    "url": "https://github.com/K-Schaeffer/ds-in-code-assets"
   },
   "files": [
     "dist",
     "src/assets"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rimraf dist && node src/build.js"
   },
